@@ -20,13 +20,17 @@
 var person = new Person('Alex', 'Petrov');
 person.fullName(); // 'Alex Petrov'
 ```
+[Ответ](./objects-and-inheritance/4-5.md)
 5. Напишите функцию-конструктор `Employee` (сотрудник), создающую объекты с такими же свойствами и методами, как у `Person`, и дополнительным свойством `position`, которое добавляется к `fullName`.
 ```js
 var employee = new Employee('Alex', 'Petrov', 'developer');
 employee.fullName(); // 'Alex Petrov (developer)'
 ```
+[Ответ](./objects-and-inheritance/4-5.md)
 6. Как ES6 классы связаны с функциями-конструкторами?
+[Ответ](./objects-and-inheritance/6.md)
 7. Как создать новый объект, прототипом которого является существующий?
+[Ответ](./objects-and-inheritance/7.md)
 8. Что появится в консоли после выполнения код?
 ```js
 var a = { b: 1},
@@ -49,10 +53,13 @@ console.log(c.z);
 12. В чем разница между свойствами prototype и `__proto__` функции?
 13. Как унаследовать одну функцию от другой? Почему не подходят `Object.create` и функция-конструктор? Зачем это может потребоваться?
 14. Обычно `Foo.prototype !== Foo.__proto__`, где Foo - произвольная функция. Объясните, почему `Function.prototype === Function.__proto__`.
+[Ответ](./objects-and-inheritance/14.md)
 
 ### Функции
 1. Объясните своими словами, что такое замыкание.
+[Ответ](./functions/1.md)
 2. Как создать функцию, не являющуюся замыканием?
+[Ответ](./functions/2.md)
 3. Что появится в консоли?
 ```js
 for (var i = 0; i < 10; i++){
@@ -61,7 +68,9 @@ for (var i = 0; i < 10; i++){
     }, 1000);
 }
 ```
+[Ответ](./functions/3.md)
 4. Как модифицировать код выше?
+[Ответ](./functions/4.md)
 5. Что появится в консоли и почему?
 ```js
 var a = 1;
