@@ -1,5 +1,7 @@
 // Объекты и наследование
 // 4. Напишите функцию-конструктор Person, которая создает объекты со свойствами name, lastName и методом fullName = () => name + lastName
+
+// ES5
 function Person(name, lastName) {
     this.name = name;
     this.lastname = lastName;
@@ -28,6 +30,31 @@ Employee.prototype.fullName = function() {
 
 var employee = new Employee('Alex', 'Petrov', 'developer');
 console.log(employee.fullName());
+
+// ES6
+
+class Person {
+    constructor(first, last) {
+        this.first = first;
+        this.last = last
+    }
+
+    fullName() {
+        console.log(this.first + ' ' + this.last);
+    }
+}
+
+class Employee extends Person {
+    constructor(first, last, pos) {
+        super(first, last);
+        this.pos = pos;
+    }
+
+    fullName() {
+        super.fullName();
+        console.log(`(${this.pos})`);
+    }
+}
 
 // 8. Что появится в консоли после выполнения кода?
 
