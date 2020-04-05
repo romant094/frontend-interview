@@ -24,7 +24,7 @@ function Employee(name, lastName, position) {
 
 Employee.prototype = Object.create(Person.prototype);
 Employee.prototype.constructor = Employee;
-Employee.prototype.fullName = function() {
+Employee.prototype.fullName = function () {
     return `${Person.prototype.fullName.call(this)} (${this.position})`;
 }
 
@@ -58,7 +58,7 @@ class Employee extends Person {
 
 // 8. Что появится в консоли после выполнения кода?
 
-var a = { b: 1 };
+var a = {b: 1};
 c = Object.create(a);
 
 console.log(c.b); // 1
@@ -75,7 +75,8 @@ console.log(a.z); // 2
 // 11. Напишите простейшую реализацию метода Object.create
 
 function myCreate(proto) {
-    function F() {};
+    function F() {
+    };
     F.prototype = proto;
     F.prototype.constructor = F;
     return new F();
@@ -98,7 +99,7 @@ for (let i = 0; i < 10; i++) {
 } // 0, 1, ..., 8, 9
 
 for (var i = 0; i < 10; i++) {
-    setTimeout(function() {
+    setTimeout(function () {
         console.log(this);
     }.bind(i), 1000);
 } // 0, 1, ..., 8, 9
@@ -123,8 +124,8 @@ foo2(); // 1, так как тут работает механизм замык�
 var userService = {
     currentFilter: 'active',
     users: [
-        { name: 'Alex', status: 'active' },
-        { name: 'Nick', status: 'deleted' }
+        {name: 'Alex', status: 'active'},
+        {name: 'Nick', status: 'deleted'}
     ],
     getFilteredUsers: function () {
         return this.users.filter((user) => user.status === this.currentFilter);
@@ -189,17 +190,17 @@ console.log(sum(5)(5)(10)());
 // 11. Как модифицировать функцию так, что бы она отработала без заключительного вызова с опущенным аргументом?
 
 function sum(a) {
-  var res = a;
+    var res = a;
 
-  function sumChain(b) {
-    res += b;
+    function sumChain(b) {
+        res += b;
+        return sumChain;
+    };
+    sumChain.toString = function () {
+        return res;
+    };
+
     return sumChain;
-  };
-  sumChain.toString = function() {
-    return res;
-  };
-
-  return sumChain;
 };
 
 console.log(sum(5)(6)(10) + 1);
@@ -221,7 +222,9 @@ console.log('f') // выводится синхронно
 // 10. Разработчик решил следовать "Закону Диметры" и получил следующий код. Как его упростить?
 
 function getCompanyInfo() {
-    return userService.companyInfo().then((res) => res, (err) => { throw err });
+    return userService.companyInfo().then((res) => res, (err) => {
+        throw err
+    });
 }
 
 // Алгоритмы и структуры данных
@@ -233,9 +236,9 @@ const intersection = (arr1, arr2) => {
     let map = {};
     arr1.forEach(el => map[el] = true);
     return arr2.reduce((acc, el) => {
-        if(map[el]) acc.push(el);
+        if (map[el]) acc.push(el);
         return acc;
-    },[])
+    }, [])
 }; // Более быстрый вариант.
 
 // 2. Есть два отсортированных массива. Написать функцию, которая вернет третий отсортированный массив, пролученный путем слияния первого и второго.
@@ -246,16 +249,16 @@ var arr2 = [3, 4, 8];
 // const sortedConcat = (arr1, arr2) => [...new Set([...arr1, ...arr2])].sort();
 
 const sortedConcat = (arr1, arr2) => {
-  let result = [];
-  const length = arr1.length + arr2.length;
-  for (let i = 0; i < length; i++) {
-    if (arr1.length !== 0 && arr1[0] < arr2[0]) {
-      result.push(arr1.shift());
-    } else if (arr2.length !== 0) {
-      result.push(arr2.shift());
+    let result = [];
+    const length = arr1.length + arr2.length;
+    for (let i = 0; i < length; i++) {
+        if (arr1.length !== 0 && arr1[0] < arr2[0]) {
+            result.push(arr1.shift());
+        } else if (arr2.length !== 0) {
+            result.push(arr2.shift());
+        }
     }
-  }
-  return result;
+    return result;
 } // Решение в es5
 
 console.log(sortedConcat(arr1, arr2));
@@ -356,7 +359,7 @@ const promiseWithCancel = promise => {
     return wrappedPromise;
 };
 
-const cancelablePromise = promiseWithCancel(myFetch("http://api/v1/1"));
+const cancelablePromise = promiseWithCancel(myFetch('http://api/v1/1'));
 // cancelablePromise.cancel();
 
 cancelablePromise.then(console.log, console.log)
@@ -385,8 +388,8 @@ function myFetch(url) {
     console.log(`start make request for url ${url} with time ${time}`);
     return new Promise(resolve => {
         setTimeout(() => {
-        console.log(`end make request for url ${url} with time ${time}`);
-        resolve(url.slice(-1));
+            console.log(`end make request for url ${url} with time ${time}`);
+            resolve(url.slice(-1));
         }, time * 1000);
     })
 }
@@ -445,9 +448,22 @@ series(fns, 4, console.log);
 
 // Задача 17 (видел на одном из собесов, решил иначе)
 
-const flatten = (deepArray) => deepArray.reduce((acc, item) => typeof item === 'number' ? [...acc, item] : [...acc, ...flatten(item)], []);
+// const flatten = (deepArray) => deepArray.reduce((acc, item) => typeof item === 'number' ? [...acc, item] : [...acc, ...flatten(item)], []);
+const flatten = arr => arr.reduce((acc, item) => Array.isArray(item) ? [...acc, ...flatten(item)] :[...acc, item] , []);
 
 console.log(flatten([1, 2, [3, 4, [5, 6], 7], 8]));
+
+// Еще вариант, но не сильно оптимальный, функция не чистая
+let result = [];
+const transpile = arr => {
+    arr.forEach(el => {
+        if (Array.isArray(el)) {
+            transpile(el)
+        } else {
+            result.push(el)
+        }
+    });
+};
 
 // Задача 18 (последовательный вызов)
 
@@ -464,8 +480,8 @@ function myFetch(url) {
     console.log(`start make request for url ${url} with time ${time}`);
     return new Promise(resolve => {
         setTimeout(() => {
-        console.log(`end make request for url ${url} with time ${time}`);
-        resolve(url.slice(-1));
+            console.log(`end make request for url ${url} with time ${time}`);
+            resolve(url.slice(-1));
         }, time * 1000);
     })
 }
@@ -483,3 +499,135 @@ const call = urls => new Promise(resolve => {
 })
 
 call(urls).then(console.log);
+
+// Implementation of Array.prototype.map
+Array.prototype.myMap = function (callback) {
+    let res = [];
+    for (let i = 0, length = this.length; i < length; i++) {
+        res.push(callback(this[i], i, this))
+    }
+    return res;
+};
+
+// Implementation of Array.prototype.filter
+Array.prototype.myFilter = function (callback) {
+    let res = [];
+    for (let i = 0, length = this.length; i < length; i++) {
+        if (callback(this[i], i, this)) {
+            res.push(this[i])
+        }
+    }
+    return res;
+};
+
+// Implementation of Array.prototype.reduce
+Array.prototype.myReduce = function (callback, initialValue) {
+    const hasInitialValue = initialValue !== undefined;
+    let value = hasInitialValue ? initialValue : this[0];
+
+    for (let i = hasInitialValue ? 0 : 1, length = this.length; i < length; i++) {
+        value = callback(value, this[i], i, this);
+    }
+    return value;
+};
+
+const parser = (string) => {
+    const arr1 = string.split('');
+    let result = '';
+    const hash = {};
+    arr1.forEach(el => {
+        if (hash[el]) {
+            hash[el]++
+        } else {
+            hash[el] = 0
+        }
+    });
+
+    for (let val in hash) {
+        result = result + val + hash[val];
+    }
+
+    return result
+}
+
+console.log(parser('wwwwaawadexxxwxxxw'))
+
+// Implementation of Array.prototype.isArray
+Array.prototype.myIsArray = function (value) {
+    return Object.prototype.toString.call(value) === '[object Array]';
+};
+
+const palindrome = string => {
+    string = string.toLowerCase();
+    return string === string.split('').reverse().join('')
+};
+
+const fizzbuzz = n => {
+    const x = 3;
+    const y = 5;
+    for (let i = 1; i < n + 1; i++) {
+        let output = i;
+        if (i % x === 0 && i % y === 0) {
+            output = 'fizzbuzz';
+        } else if (i % x === 0) {
+            output = 'fizz';
+        } else if (i % y === 0) {
+            output = 'buzz';
+        }
+        console.log(output)
+    }
+};
+
+const anagram = (str1, str2) => {
+    const hash1 = {};
+    const hash2 = {};
+    const createHash = (str, hash) => str.replace(/[^\w]/g).toLowerCase().split('').forEach(el => hash[el] ? hash[el]++ : hash[el] = 0);
+    createHash(str1, hash1);
+    createHash(str2, hash2);
+    if (Object.keys(str1) !== Object.keys(str2)){
+        return  false;
+    }
+    for (let prop in hash1) {
+        if (hash1[prop] !== hash2[prop]) {
+            return false;
+        }
+    }
+    return true;
+};
+
+
+function w() {
+    setTimeout(() => console.log('1'), 0);
+    var promise = new Promise((resolve) => {
+        console.log('2');
+        resolve()
+    });
+    promise.then(() => console.log('3'));
+    console.log('4');
+}
+
+w()
+
+
+function Dog(name) {
+    this.name = name
+}
+
+Dog.prototype.bark = function () {
+    console.log(this.name + ' says woof')
+}
+let fido = new Dog('fido');
+fido.bark()
+
+
+var arr = [{date: '10.01.2020'}, {date: '05.11.2016'}, {date: '21.12.2002'}];
+
+const formatDate = date => {
+    const extract = (string, from, to) => string.substr(from, to);
+    const day = extract(date, 0, 2);
+    const month = extract(date, 3, 2);
+    const year = extract(date, 6, 4);
+    return new Date(`${year}-${month}-${day}`).getTime();
+};
+
+arr.sort((a, b) => formatDate(a.date) - formatDate(b.date));
